@@ -8,7 +8,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     document.getElementById("userEmailId").innerHTML = user.email;
     document.getElementById("userProfile").src = user.photoURL;
   } else {
-    window.location.replace("index.html");
+    //window.location.replace("index.html");
   }
 });
 

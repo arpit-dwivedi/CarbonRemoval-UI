@@ -3,9 +3,7 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var ref = database.ref("admin");
 
-
 function register() {
-
   const signUpForm = document.querySelector("#signUp_form");
   const email = signUpForm["exampleInputEmail"].value;
   const password = signUpForm["exampleInputPassword"].value;
@@ -15,7 +13,7 @@ function register() {
     signUpForm["exampleLastName"].value;
   var userCreateds = true;
 
-    alert(email);
+
 
   // if (userCreateds && email != "" && password != "") {
   if (email != "" && password != "") {
