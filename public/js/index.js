@@ -3,6 +3,8 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var ref = database.ref("admin");
 
+console.log("I am running");
+
 function register() {
   const signUpForm = document.querySelector("#signUp_form");
   const email = signUpForm["exampleInputEmail"].value;
