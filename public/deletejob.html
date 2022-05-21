@@ -353,13 +353,50 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- 404 Error Text -->
-          <div class="text-center">
-            <div class="error mx-auto" data-text="404">404</div>
-            <p class="lead text-gray-800 mb-5">Page Not Found</p>
-            <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-            <a href="index.html">&larr; Back to Dashboard</a>
+          <!-- Page Heading -->
+          <h1 class="h3 mb-4 text-gray-800">Delete Job</h1>
+          <div class="container">
+            <form class="user" id="deleteJob_form" autocomplete="off">
+              <div class="form-group">
+                <label for="jbTtle">Job Key:</label>
+                <input type="text" class="form-control" id="jobKey" required="true">
+              </div>
+
+              <a href="#" onclick="deleteJob()" id="search" class="btn btn-primary btn-user btn-block">
+                Search
+              </a>
+            </form>
           </div>
+
+          <div class="container" id="information" style="display: none;">
+            <br>
+            <br>
+            <br>
+            <h1 class="h3 mb-4 text-gray-800">Job Information Portal</h1>
+            <table class="table table-bordered" id="myTable">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Job Title</th>
+                  <th>Required Skills</th>
+                  <th>Job CTC</th>
+                  <th>Applying Date From</th>
+                  <th>Applying Date From</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+            <a href="#" id="delete" onclick="deleteJobFromDb()" class="btn btn-primary btn-user btn-block">
+              Delete
+            </a>
+            <a href="#" id="cancel" onclick="cancel()" class="btn btn-primary btn-user btn-block">
+              Cancel
+            </a>
+          </div>
+
+
 
         </div>
         <!-- /.container-fluid -->
@@ -417,6 +454,26 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyAzuY-I178V3mo458chV_vssceQ67Ycdbo",
+      authDomain: "placement-success.firebaseapp.com",
+      databaseURL: "https://placement-success.firebaseio.com",
+      projectId: "placement-success",
+      storageBucket: "placement-success.appspot.com",
+      messagingSenderId: "568068657190",
+      appId: "1:568068657190:web:86479c8aba6e1762e716e7",
+      measurementId: "G-8FTB127YJ5"
+    };
+  </script>
+
+  <script type="text/javascript" src="js/deleteJob.js"></script>
+
+
 
 </body>
 

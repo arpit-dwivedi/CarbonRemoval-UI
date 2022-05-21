@@ -11,7 +11,9 @@
 
   <title>Admin Dashboard</title>
 
+
   <!-- Custom fonts for this template-->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -19,6 +21,7 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -353,13 +356,66 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- 404 Error Text -->
-          <div class="text-center">
-            <div class="error mx-auto" data-text="404">404</div>
-            <p class="lead text-gray-800 mb-5">Page Not Found</p>
-            <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-            <a href="index.html">&larr; Back to Dashboard</a>
+          <!-- Page Heading -->
+          <h1 class="h3 mb-4 text-gray-800">Post Job</h1>
+          <div class="container">
+            <form class="user" id="postJob_form" autocomplete="off">
+              <div class="form-group">
+                <label for="jbTtle">Job Title:</label>
+                <input type="text" class="form-control" id="jobTitle" required="true">
+              </div>
+              <div class="form-group">
+                <label for="jbDesc">Job Description:</label>
+                <textarea class="form-control" rows="5" id="jobDescription" required="true"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="jbResp">Job Responsiblity:</label>
+                <textarea class="form-control" rows="3" id="jobResponsibility" required="true"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="reqSk">Required Skills:</label>
+                <textarea class="form-control" rows="3" id="requiredSkills" required="true"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="elgCr">Eligibility Criteria:</label>
+                <textarea class="form-control" rows="1" id="elegibilityCriteria" required="true"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="jbBr">Eligible Branch ( Seperate branch code by ,(commas) ) :</label>
+                <input type="text" class="form-control" id="elegibleBranch" required="true">
+              </div>
+              <div class="form-group">
+                <label for="jbCtc">Job CTC:</label>
+                <input type="text" class="form-control" id="jobCtc">
+              </div>
+              <div class="form-group">
+                <label for="jbLk">Applying Date From:</label>
+                <input type="text" class="form-control" id="applyDateFrom" required="true">
+              </div>
+              <div class="form-group">
+                <label for="jbLk">Applying Date To:</label>
+                <input type="text" class="form-control" id="applyDateTo" required="true">
+              </div>
+              <div class="form-group">
+                <label for="jbLklg">Link For logo:</label>
+                <input type="url" class="form-control" id="linkLogo" placeholder="https://example.com"
+                  pattern="https://.*" required="true">
+              </div>
+              <div class="form-group">
+                <label for="jbLk">Any External Link Provided:</label>
+                <input type="url" class="form-control" id="link" placeholder="https://example.com" pattern="https://.*"
+                  required="true">
+              </div>
+
+
+              <a href="#" onclick="postJob()" class="btn btn-primary btn-user btn-block">
+                Post
+              </a>
+            </form>
           </div>
+
+
+
 
         </div>
         <!-- /.container-fluid -->
@@ -417,6 +473,25 @@
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyAzuY-I178V3mo458chV_vssceQ67Ycdbo",
+      authDomain: "placement-success.firebaseapp.com",
+      databaseURL: "https://placement-success.firebaseio.com",
+      projectId: "placement-success",
+      storageBucket: "placement-success.appspot.com",
+      messagingSenderId: "568068657190",
+      appId: "1:568068657190:web:86479c8aba6e1762e716e7",
+      measurementId: "G-8FTB127YJ5"
+    };
+  </script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/postJob.js"></script>
+
 
 </body>
 
