@@ -3,7 +3,7 @@ firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 var ref = database.ref("admin");
 
-console.log("I am running");
+console.log("I am running late");
 
 function register() {
   const signUpForm = document.querySelector("#signUp_form");
