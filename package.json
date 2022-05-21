@@ -1,0 +1,19 @@
+{
+  "name": "carbonremoval-ui",
+  "version": "1.0.0",
+  "description": "A marketplace for carbon removal footprints",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arpit-dwivedi/CarbonRemoval-UI.git"
+  },
+  "author": "Shunya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arpit-dwivedi/CarbonRemoval-UI/issues"
+  },
+  "homepage": "https://github.com/arpit-dwivedi/CarbonRemoval-UI#readme"
+}
