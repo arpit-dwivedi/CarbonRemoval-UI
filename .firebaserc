@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "carbonremoval-2aebc"
-  }
+    "default": "carbonremoval-2aebc",
+    "staging": "carbonremoval-2aebc"
+  },
+  "targets": {}
 }

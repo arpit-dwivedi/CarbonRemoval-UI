@@ -1,0 +1,7 @@
+.cardHover:hover {
+  background-color: #c2bfbe;
+}
+
+.selected {
+  background: #c2bfbe;
+}
