@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin Dashboard</title>
+    <title>Market Place</title>
 
 
     <!-- Custom fonts for this template-->
@@ -27,54 +27,92 @@
             font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Ubuntu,sans-serif;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
             transition: 0.3s;
-            border-radius:20px 20px;
-
+            border-radius: 20px 20px;
         }
     </style>
 
 </head>
 
 <body>
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
-        <div class="btn btn-info" id="loggedInUserId" style="float:right;margin:10px;"></div>
-        
-        <div class="container nftForm" style="padding:40px;width:60%;margin-top:100px;">
-            <!-- Page Heading -->
-            <h1 class="h3 mb-4 text-gray-800" style="text-align:center;">Mint NFT</h1>
+    <header id="portfolio">
+        <div class="w3-container">
+            <!-- Begin NavBar Content -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="#">Market Place</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <form class="user" id="mintNFT_form" autocomplete="off">
-                <div class="form-group">
-                    <label for="nftTitle">NFT Name</label>
-                    <input type="text" class="form-control" id="nftTitle" required="true">
-                </div>
-                <div class="form-group">
-                    <label for="longitude">Longitude</label>
-                    <input type="text" class="form-control" id="longitude" required="true"
-                           pattern="^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$">
-                </div>
-                <div class="form-group">
-                    <label for="jbTtle">Latitude</label>
-                    <input type="text" class="form-control" id="latitude" required="true"
-                           pattern="^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$">
-                </div>
-                <div class="form-group">
-                    <label for="formFileSm" class="form-label">Image</label>
-                    <input class="form-control form-control-sm" id="image" type="file">
-                </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                        </li>
 
-                <!-- <a href="#" onclick="postJob()" class="btn btn-primary btn-user btn-block"> -->
-                <a href="#" onclick="mintNft()" class="btn btn-primary btn-user btn-block">
+                        <li class="nav-item UserIsFarmer">
+                            <a class="nav-link" href="mintNft.html">Mint NFT</a>
+                        </li>
+                    </ul>
 
-                    Mint
-                </a>
-            </form>
+                    <ul class="navbar-nav narvbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="ConnectMetamusk()">Connect Metamusk</a>
+                        </li>
+
+                        <li class="nav-item NotAlreadyRegistered">
+                            <a class="nav-link" href="login.html">Login</a>
+                        </li>
+
+                        <li class="nav-item NotAlreadyRegistered">
+                            <a class="nav-link" href="registerfarmer.html">Sign Up</a>
+                        </li>
+
+                        <li class="nav-item dropdown UserIsFarmer">
+                            <a class="nav-link dropdown-toggle" href="#" id="loggedInUserId" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- End NavBar Content -->
+            <!-- Begin Page Content -->
+            <div>
+                <div class="container nftForm" style="padding:40px;width:60%;margin-top:100px;">
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800" style="text-align:center;">Mint NFT</h1>
+
+                    <form class="user" id="mintNFT_form" autocomplete="off">
+                        <div class="form-group">
+                            <label for="nftTitle">NFT Name</label>
+                            <input type="text" class="form-control" id="nftTitle" required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="longitude">Longitude</label>
+                            <input type="text" class="form-control" id="longitude" required="true"
+                                   pattern="^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$">
+                        </div>
+                        <div class="form-group">
+                            <label for="jbTtle">Latitude</label>
+                            <input type="text" class="form-control" id="latitude" required="true"
+                                   pattern="^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$">
+                        </div>
+                        <div class="form-group">
+                            <label for="formFileSm" class="form-label">Image</label>
+                            <input class="form-control form-control-sm" id="image" type="file">
+                        </div>
+
+                        <!-- <a href="#" onclick="postJob()" class="btn btn-primary btn-user btn-block"> -->
+                        <a href="#" onclick="mintNft()" class="btn btn-primary btn-user btn-block">Mint</a>
+                    </form>
+                </div>
+            </div>
+            <!-- End Page Content -->
         </div>
 
 
-
-
-    </div>
+    </header>
     <!-- /.container-fluid -->
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

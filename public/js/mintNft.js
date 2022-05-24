@@ -4,6 +4,9 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user != null) {
         if (user.emailVerified) {
             document.getElementById('loggedInUserId').innerText = user.email;
+
+            $('.UserIsFarmer').show();
+            $('.NotAlreadyRegistered').hide();
         }
         else {
             confirm('You need to verify your email before accessing this feature !!!');
@@ -14,7 +17,6 @@ firebase.auth().onAuthStateChanged(function (user) {
         window.location.replace("index.html");
     }
 });
-
 
 // Get a reference to the database service
 var database = firebase.database();

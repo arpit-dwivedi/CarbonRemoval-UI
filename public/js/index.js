@@ -1,7 +1,6 @@
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-
 //handles user auth
 firebase.auth().onAuthStateChanged(function (user) {
     if (user != null) {
@@ -23,6 +22,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
+//handles the logic for logout
 function logout() {
     firebase.auth().signOut().then(function () {
         // Sign-out successful.
@@ -33,10 +33,12 @@ function logout() {
     });
 }
 
+//handles the logic for connecting to metamusk
 function ConnectMetamusk() {
     alert('Under Development');
 }
 
+//loading of nft starts here
 var itemsInMarketPlace = [];
 var ref = firebase.database().ref('Company');
 
@@ -55,14 +57,14 @@ ref.once('value', function (snap) {
         let content = "";
         for (let x = 0; x < 3 && j < itemsInMarketPlace.length; ++x, ++j) {
             childDiv += `
-                            <div class="w3-third w3-container w3-margin-bottom"><img src="${itemsInMarketPlace[j].images}" alt="Norway" style="width:100%" class="w3-hover-opacity">
+                            <div class="w3-third img-thumbnail w3-container w3-margin-bottom"><img src="${itemsInMarketPlace[j].images}" alt="Norway" style="width:100%" class="w3-hover-opacity">
                                 <div class="w3-container w3-white"">
-                                    <p><b>Carbon Emission : </b></p>
-                                    <p><b>Longitude: ${itemsInMarketPlace[j].longitude} </b></p>
-                                    <p><b>Latitude: ${itemsInMarketPlace[j].latitude} </b></p>
+                                    <p><strong>Carbon Emission : </strong></p>
+                                    <span>Longitude: <strong>${itemsInMarketPlace[j].longitude} </strong></span>
+                                    <span>Latitude: <strong>${itemsInMarketPlace[j].latitude} </strong></span>
                                     <div>
-                                        <p style="float:left"><b>Price : </b></p>
-                                         <button type="button" class="btn btn-primary buy-now" style="float:right;margin-bottom:10px; font-size:12px;">Buy Now</button>
+                                        <p style="float:left"><strong>Price : </strong></p>
+                                         <button type="button" class="btn btn-primary buyNowNftIndex" style="float:right;margin-bottom:10px; font-size:12px;">Buy Now</button>
                                     </div>
                                  </div>
                             </div>`
@@ -70,4 +72,9 @@ ref.once('value', function (snap) {
         content = `<div class="w3-row-padding">` + childDiv + `</div>`;
         document.getElementById('main-div').innerHTML += content;
     }
+});
+
+//Event handler for buy nft
+$(document).on('click', '.buyNowNftIndex', function () {
+    alert('We are working hard to make it work!!!');
 });

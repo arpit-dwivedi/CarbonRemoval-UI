@@ -12,79 +12,126 @@
     <title>Market Place</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css"
-          rel="stylesheet"
-          type="text/css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet" />
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
+          rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
-        body, h1, h2, h3, h4, h5, h6 {
+        #otherIndexPart h1, h2, h3, h4, h5, h6 {
             font-family: "Raleway", sans-serif
         }
 
-        p {
+        #otherIndexPart p {
             font-size: 14px;
+        }
+
+        #otherIndexPart {
+            border-radius:20px 20px;
+            background-color:antiquewhite;
         }
     </style>
 
 </head>
 
-<body class="w3-light-grey w3-content" style="max-width:1600px ;color:white">
+<body>
 
-    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+    <div id="mainIndexNavBar">
+        <!-- Begin NavBar Content -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Market Place</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <!-- !PAGE CONTENT! -->
-    <div class="w3-main" id="main-div">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                    </li>
 
-        <!-- Header -->
-        <header id="portfolio">
-            <a href="#"><img src="" style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
-            <div class="w3-container">
-                <h1 style="margin-top:20px; margin-bottom:-20px;text-align:center"><b>Market Place</b></h1>
+                    <li class="nav-item UserIsFarmer">
+                        <a class="nav-link" href="mintNft.html">Mint NFT</a>
+                    </li>
+                </ul>
 
-                <div class="w3-section w3-bottombar w3-padding-16" style="float:right;padding:5px;">
-                    <div class="NotAlreadyRegistered">
-                        <button class="btn btn-success" style="font-size:14px; color:white">
-                            <i class="fa fa-sign-in w3-margin-right"></i><a href="login.html" style="color:white">Login</a>
+                <ul class="navbar-nav narvbar-right">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="ConnectMetamusk()">Connect Metamusk</a>
+                    </li>
+
+                    <li class="nav-item NotAlreadyRegistered">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+
+                    <li class="nav-item NotAlreadyRegistered">
+                        <a class="nav-link" href="registerfarmer.html">Sign Up</a>
+                    </li>
+
+                    <li class="nav-item dropdown UserIsFarmer">
+                        <a class="nav-link dropdown-toggle" href="#" id="loggedInUserId" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- End NavBar Content -->
+    </div>
+
+    <div id="otherIndexPart" class="w3-light-grey w3-content" style="max-width:1600px ;color:white">
+        <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+        <!-- !PAGE CONTENT! -->
+        <div class="w3-main" id="main-div">
+            <h1 style="margin-top:20px; margin-bottom:20px;text-align:center"><b>NFTs</b></h1>
+            <!-- Header -->
+            <!--<header id="portfolio">
+                <div class="w3-container">
+
+
+                    <div class="w3-section w3-bottombar w3-padding-16" style="float:right;padding:5px;">
+                        <div class="NotAlreadyRegistered">
+                            <button class="btn btn-success" style="font-size:14px; color:white">
+                                <i class="fa fa-sign-in w3-margin-right"></i><a href="login.html" style="color:white">Login</a>
+                            </button>
+                            <button class="btn btn-warning" style="font-size:14px;">
+                                <i class="fa fa-sign-in w3-margin-right"></i><a href="registerfarmer.html" style="color:black">Sign Up</a>
+                            </button>
+                        </div>
+
+                        <button class="btn btn-secondary" style="font-size:14px;">
+                            <i class="fa fa-link w3-margin-right"></i><a href="#" style="color:black" onclick="ConnectMetamusk()">Connect Metamusk</a>
                         </button>
-                        <button class="btn btn-warning" style="font-size:14px;">
-                            <i class="fa fa-sign-in w3-margin-right"></i><a href="registerfarmer.html" style="color:black">Sign Up</a>
-                        </button>
-                    </div>
 
-                    <button class="btn btn-secondary" style="font-size:14px;">
-                        <i class="fa fa-link w3-margin-right"></i><a href="#" style="color:black" onclick="ConnectMetamusk()">Connect Metamusk</a>
-                    </button>
+                        <div class="UserIsFarmer">
+                            <button class="btn btn-info" style="font-size:14px; color:white">
+                                <i class="fa fa-user w3-margin-right"></i><a id="loggedInUserId"></a>
+                            </button>
 
-                    <div class="UserIsFarmer">
-                        <button class="btn btn-info" style="font-size:14px; color:white">
-                            <i class="fa fa-user w3-margin-right"></i><a id="loggedInUserId"></a>
-                        </button>
+                            <button class="btn btn-info" style="font-size:14px;">
+                                <i class="fa fa-plus w3-margin-right"></i><a href="mintNft.html" style="color:black">Mint NFT</a>
+                            </button>
 
-                        <button class="btn btn-info" style="font-size:14px;">
-                            <i class="fa fa-plus w3-margin-right"></i><a href="mintNft.html" style="color:black">Mint NFT</a>
-                        </button>
+                            <button class="btn btn-primary" style="font-size:14px;">
+                                <i class="fa fa-minus w3-margin-right"></i><a href="#" onclick="logout()" style="color:black">Logout</a>
+                            </button>
+                        </div>
 
-                        <button class="btn btn-primary" style="font-size:14px;">
-                            <i class="fa fa-minus w3-margin-right"></i><a href="#" onclick="logout()" style="color:black">Logout</a>
-                        </button>
                     </div>
 
                 </div>
-
-            </div>
-        </header>
-
-        <!-- End page content -->
+            </header>-->
+            <!-- End page content -->
+        </div>
     </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
