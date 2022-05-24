@@ -33,11 +33,6 @@ function logout() {
     });
 }
 
-//handles the logic for connecting to metamusk
-function ConnectMetamusk() {
-    alert('Under Development');
-}
-
 //loading of nft starts here
 var itemsInMarketPlace = [];
 var ref = firebase.database().ref('Company');
