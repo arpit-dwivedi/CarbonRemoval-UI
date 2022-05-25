@@ -165,21 +165,17 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
 };
 
 function loadNftIntoMarketPlace(item, j) {
-    childDiv = `
-                            <div class="w3-third img-thumbnail w3-container w3-margin-bottom"><img src="${item.image}" alt="Norway" style="width:100%" class="w3-hover-opacity">
-                                <div class="w3-container w3-white"">
-                                    <p><strong>Carbon Emission : ${item.itemId}</strong></p>
-                                    <span>Longitude: <strong>${item.location.longitude} </strong></span>
-                                    <span>Latitude: <strong>${item.location.latitude} </strong></span>
-                                    <div>
-                                        <p style="float:left"><strong>Price :${item.totalPrice} </strong></p>
-                                         <button type="button" class="btn btn-primary buyNowNftIndex" style="float:right;margin-bottom:10px; font-size:12px;">Buy Now</button>
-                                    </div>
-                                 </div>
-                            </div>`
+    var childDiv = `<div class="card col-md-3 col-sm-3" style="margin:5px;">
+                      <img class="img-fluid img-thumbnail" src="${item.image}" alt="Card image cap">
+                      <div class="card-body">
+                        <h5 class="card-title">Carbon Emission : ${item.itemId}</h5>
+                        <p class="card-text">Longitude: <strong>${item.location.longitude}  </strong> Latitude: <strong>${item.location.latitude} </strong></p>
+                        <p class="card-text">Price :<strong>${item.totalPrice} </strong></p>
+                        <button type="button" class="btn btn-primary buyNowNftIndex" style="float:right;margin-bottom:10px; font-size:12px;">Buy Now</button>
+                      </div>
+                    </div>`;
 
-    content = `<div class="w3-row-padding">` + childDiv + `</div>`;
-    document.getElementById('main-div').innerHTML += content;
+    document.getElementById('bodyForCards').innerHTML += childDiv;
 }
 
 //Call the initiatie process for loading all NFT
