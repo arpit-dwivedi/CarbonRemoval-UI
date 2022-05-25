@@ -29,7 +29,7 @@ function mintNft() {
     const longitude = mintNFTForm["longitude"].value;
     const latitude = mintNFTForm["latitude"].value;
     const image = mintNFTForm["image"].value;
-    
+
     if (
         nftTitle != "" &&
         longitude != "" &&
@@ -37,14 +37,175 @@ function mintNft() {
         image != ""
     ) {
         var data = {
-            nftTitle: nftTitle,
-            longitude: longitude,
-            latitude: latitude,
-            image: image
+            geocodedLocation: {
+                latitude: latitude,
+                longitude: longitude
+            },
+            image: '',
+            name: nftTitle
         };
-        ref.push(data);
-        window.location.replace("mintNft.html");
+
+        //ref.push(data);
+        readFile(data);
+        //window.location.replace("mintNft.html");
     } else {
         alert("Fill in all the places to post...");
     }
 }
+
+function readFile(data) {
+    //Gets files from document element
+    var files = document.getElementById('image').files;
+    //Selects first File and assigns it to file
+    var file = files[0];
+
+    console.log(files, file);
+
+    if (file.type == "image/jpeg") {
+        console.log("file is okay");
+        callPinataIpfs(file, data);
+
+    }
+    else {
+        alert('Please select img file only!!!');
+    }
+}
+
+const callPinataIpfs = (file, data) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJiOWEwYmJlYy1hOTdkLTQ1N2YtOTQ5NS1lMjkyN2Q2ODU1ZDMiLCJlbWFpbCI6ImFzaHNpaHM0MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlfSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiODk2MjcwZjAyZmM3ZWZhNGJjMmEiLCJzY29wZWRLZXlTZWNyZXQiOiJiMmJhNWFjNDQwNGY0NDgzNGYyZWEzZTI3ZjVjNDgwNWIwMmEzZjQ5ZDAxYzQ1ZDFhMzYzYTZkMGY3ZjE4YWE5IiwiaWF0IjoxNjUzMjQyMDg0fQ.hhupKEvtdxZAyZ2O7KM4NSL9lrUPcy6F5_eB_9EZBbY");
+
+    var formdata = new FormData();
+    formdata.append("file", file);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow'
+    };
+
+    fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            if (!result.isDuplicate) {
+                data.image = "https://gateway.pinata.cloud/ipfs/" + result.IpfsHash;
+                uploadPinataImageWithMetaDeta(data);
+            }
+            else {
+                alert('Please use different image as this  already being used!!!')
+            }
+
+        })
+        .catch(error => {
+            console.log('error', error)
+        });
+}
+
+const uploadPinataImageWithMetaDeta = (data) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJiOWEwYmJlYy1hOTdkLTQ1N2YtOTQ5NS1lMjkyN2Q2ODU1ZDMiLCJlbWFpbCI6ImFzaHNpaHM0MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlfSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiODk2MjcwZjAyZmM3ZWZhNGJjMmEiLCJzY29wZWRLZXlTZWNyZXQiOiJiMmJhNWFjNDQwNGY0NDgzNGYyZWEzZTI3ZjVjNDgwNWIwMmEzZjQ5ZDAxYzQ1ZDFhMzYzYTZkMGY3ZjE4YWE5IiwiaWF0IjoxNjUzMjQyMDg0fQ.hhupKEvtdxZAyZ2O7KM4NSL9lrUPcy6F5_eB_9EZBbY");
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify(data);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            if (!result.isDuplicate) {
+                callContractForLoading("https://gateway.pinata.cloud/ipfs/" + result.IpfsHash)
+            }
+            else {
+                alert('Metadeta already Exist, please provide different to proceed!!!')
+            }
+        })
+        .catch(error => console.log('error', error));
+}
+
+const web3 = AlchemyWeb3.createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/qRiwHS9t7GVkOSDQJCXocuGu84EsYVwZ");
+
+const callContractForLoading = (uri) => {
+
+    fetch("./contractsData/Marketplace.json")
+        .then(response => {
+            return response.json();
+        })
+        .then(marketPlaceAbi => {
+
+            fetch("./contractsData/Marketplace-address.json")
+                .then(response => {
+                    return response.json();
+                })
+                .then(marketPlaceContractAddress => {
+                    fetch("./contractsData/NFT.json")
+                        .then(response => {
+                            return response.json();
+                        })
+                        .then(nftAbi => {
+
+                            fetch("./contractsData/NFT-address.json")
+                                .then(response => {
+                                    return response.json();
+                                })
+                                .then(nftContractAddress => {
+                                    loadContractData(nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri);
+                                });
+                        });
+                });
+        });
+
+};
+
+const isMetaMaskInstalled = () => {
+    //Have to check the ethereum binding on the window object to see if it's installed
+    const { ethereum } = window;
+    return Boolean(ethereum && ethereum.isMetaMask);
+};
+
+const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri) => {
+
+    const nft = new web3.eth.Contract(nftAbi.abi, nftContractAddress.address);
+
+    const marketPlace = new web3.eth.Contract(marketPlaceAbi.abi, marketPlaceContractAddress.address);
+
+    if (isMetaMaskInstalled) {
+
+        ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
+            console.log(accounts[0], uri);
+            minNft(accounts[0], nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace);
+        });
+    }
+
+
+};
+
+const minNft = (account, nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace) => {
+    nft.methods.mint(uri).send({ from: account }).then(function (result) {
+        console.log(result);
+
+        nft.methods.tokenCount().call().then(id => {
+            console.log("tokenCount " + id)
+            nft.methods.setApprovalForAll(marketPlaceContractAddress.address, true).send({ from: account }).then(function (result) {
+                console.log("result : ");
+                console.log(result);
+                const listingPrice = web3.utils.toWei("0.002")
+
+                marketPlace.methods.makeItem(nftContractAddress.address, id, listingPrice).send({ from: account }).then(function (data) {
+                    console.log("data : ");
+                    console.log(data);
+                    window.location.href = "index.html";
+                }).catch(error => console.log(error));
+
+            });
+        });
+    });
+
+};
