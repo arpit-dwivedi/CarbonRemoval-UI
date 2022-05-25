@@ -18,6 +18,16 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
+function logout() {
+    firebase.auth().signOut().then(function () {
+        // Sign-out successful.
+        window.location.replace("login.html");
+    }).catch(function (error) {
+        // An error happened.
+        alert(error.message);
+    });
+}
+
 // Get a reference to the database service
 var database = firebase.database();
 var ref = database.ref("MintNFT");
