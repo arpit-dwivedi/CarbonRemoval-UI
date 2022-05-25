@@ -39,12 +39,15 @@ function mintNft() {
     const longitude = mintNFTForm["longitude"].value;
     const latitude = mintNFTForm["latitude"].value;
     const image = mintNFTForm["image"].value;
+    const price = mintNFTForm["price"].value;
+
 
     if (
         nftTitle != "" &&
         longitude != "" &&
         latitude != "" &&
-        image != ""
+        image != "" &&
+        price != ""
     ) {
         var data = {
             geocodedLocation: {
@@ -52,18 +55,20 @@ function mintNft() {
                 longitude: longitude
             },
             image: '',
-            name: nftTitle
-        };
+            name: nftTitle,
 
+        };
+        // let price = price;
         //ref.push(data);
-        readFile(data);
+        console.log(price);
+        readFile(data, price);
         //window.location.replace("mintNft.html");
     } else {
         alert("Fill in all the places to post...");
     }
 }
 
-function readFile(data) {
+function readFile(data, price) {
     //Gets files from document element
     var files = document.getElementById('image').files;
     //Selects first File and assigns it to file
@@ -73,7 +78,7 @@ function readFile(data) {
 
     if (file.type == "image/jpeg") {
         console.log("file is okay");
-        callPinataIpfs(file, data);
+        callPinataIpfs(file, data, price);
 
     }
     else {
@@ -81,7 +86,7 @@ function readFile(data) {
     }
 }
 
-const callPinataIpfs = (file, data) => {
+const callPinataIpfs = (file, data, price) => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJiOWEwYmJlYy1hOTdkLTQ1N2YtOTQ5NS1lMjkyN2Q2ODU1ZDMiLCJlbWFpbCI6ImFzaHNpaHM0MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlfSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiODk2MjcwZjAyZmM3ZWZhNGJjMmEiLCJzY29wZWRLZXlTZWNyZXQiOiJiMmJhNWFjNDQwNGY0NDgzNGYyZWEzZTI3ZjVjNDgwNWIwMmEzZjQ5ZDAxYzQ1ZDFhMzYzYTZkMGY3ZjE4YWE5IiwiaWF0IjoxNjUzMjQyMDg0fQ.hhupKEvtdxZAyZ2O7KM4NSL9lrUPcy6F5_eB_9EZBbY");
 
@@ -101,7 +106,7 @@ const callPinataIpfs = (file, data) => {
             console.log(result);
             if (!result.isDuplicate) {
                 data.image = "https://gateway.pinata.cloud/ipfs/" + result.IpfsHash;
-                uploadPinataImageWithMetaDeta(data);
+                uploadPinataImageWithMetaDeta(data, price);
             }
             else {
                 alert('Please use different image as this  already being used!!!')
@@ -113,7 +118,7 @@ const callPinataIpfs = (file, data) => {
         });
 }
 
-const uploadPinataImageWithMetaDeta = (data) => {
+const uploadPinataImageWithMetaDeta = (data, price) => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJiOWEwYmJlYy1hOTdkLTQ1N2YtOTQ5NS1lMjkyN2Q2ODU1ZDMiLCJlbWFpbCI6ImFzaHNpaHM0MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlfSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiODk2MjcwZjAyZmM3ZWZhNGJjMmEiLCJzY29wZWRLZXlTZWNyZXQiOiJiMmJhNWFjNDQwNGY0NDgzNGYyZWEzZTI3ZjVjNDgwNWIwMmEzZjQ5ZDAxYzQ1ZDFhMzYzYTZkMGY3ZjE4YWE5IiwiaWF0IjoxNjUzMjQyMDg0fQ.hhupKEvtdxZAyZ2O7KM4NSL9lrUPcy6F5_eB_9EZBbY");
     myHeaders.append("Content-Type", "application/json");
@@ -131,7 +136,7 @@ const uploadPinataImageWithMetaDeta = (data) => {
         .then(response => response.json())
         .then(result => {
             if (!result.isDuplicate) {
-                callContractForLoading("https://gateway.pinata.cloud/ipfs/" + result.IpfsHash)
+                callContractForLoading("https://gateway.pinata.cloud/ipfs/" + result.IpfsHash, price)
             }
             else {
                 alert('Metadeta already Exist, please provide different to proceed!!!')
@@ -142,7 +147,7 @@ const uploadPinataImageWithMetaDeta = (data) => {
 
 const web3 = AlchemyWeb3.createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/qRiwHS9t7GVkOSDQJCXocuGu84EsYVwZ");
 
-const callContractForLoading = (uri) => {
+const callContractForLoading = (uri, price) => {
 
     fetch("./contractsData/Marketplace.json")
         .then(response => {
@@ -166,7 +171,7 @@ const callContractForLoading = (uri) => {
                                     return response.json();
                                 })
                                 .then(nftContractAddress => {
-                                    loadContractData(nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri);
+                                    loadContractData(nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, price);
                                 });
                         });
                 });
@@ -180,7 +185,7 @@ const isMetaMaskInstalled = () => {
     return Boolean(ethereum && ethereum.isMetaMask);
 };
 
-const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri) => {
+const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, price) => {
 
     const nft = new web3.eth.Contract(nftAbi.abi, nftContractAddress.address);
 
@@ -190,14 +195,14 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             console.log(accounts[0], uri);
-            minNft(accounts[0], nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace);
+            minNft(accounts[0], nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace, price);
         });
     }
 
 
 };
 
-const minNft = (account, nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace) => {
+const minNft = (account, nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace, price) => {
     nft.methods.mint(uri).send({ from: account }).then(function (result) {
         console.log(result);
 
@@ -206,7 +211,7 @@ const minNft = (account, nftAbi, nftContractAddress, marketPlaceAbi, marketPlace
             nft.methods.setApprovalForAll(marketPlaceContractAddress.address, true).send({ from: account }).then(function (result) {
                 console.log("result : ");
                 console.log(result);
-                const listingPrice = web3.utils.toWei("0.002")
+                const listingPrice = web3.utils.toWei(price)
 
                 marketPlace.methods.makeItem(nftContractAddress.address, id, listingPrice).send({ from: account }).then(function (data) {
                     console.log("data : ");
