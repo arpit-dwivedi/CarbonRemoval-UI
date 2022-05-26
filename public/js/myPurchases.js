@@ -121,7 +121,7 @@ const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace,
 
                                     if (isMetaMaskInstalled) {
                                         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-                                            if (item.buyer == accounts[0]) {
+                                            if (item.buyer.toLowerCase() == accounts[0].toLowerCase()) {
                                                 items.push({
                                                     totalPrice,
                                                     itemId: item.itemId,

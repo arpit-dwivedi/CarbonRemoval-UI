@@ -123,6 +123,26 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 
     loadMarketplaceData(nft, nftAbi, nftContractAddress, marketPlace, marketPlaceAbi, marketPlaceContractAddress);
 
+    //Event handler for buy nft
+    $(document).on('click', '.buyNowNftIndex', function () {
+        alert('We are working hard to make it work!!!');
+        var dataId = $(this).data("id").split(" ");
+
+        var itemId = dataId[0];
+        var totalPrice = dataId[1];
+
+        console.log(itemId, totalPrice);
+        if (isMetaMaskInstalled) {
+            ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
+                marketPlace.methods.purchaseItem(itemId).send({ from: accounts[0] }).then(function (response) {
+                    console.log(response);
+                });
+
+            });
+        }
+
+        
+    });
 };
 
 const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marketPlaceAbi, marketPlaceContractAddress) => {
@@ -132,35 +152,39 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
         if (itemCount > 0) {
             for (let i = 1; i <= itemCount; i++) {
                 marketPlace.methods.items(i).call().then(function (item) {
-                    //console.log(item);
+                    
+                    if (isMetaMaskInstalled) {
+                        ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
+                            if (!item.sold && item.seller.toLowerCase() != accounts[0].toLowerCase()) {
+                                // get uri url from nft contract
 
-                    if (!item.sold) {
-                        // get uri url from nft contract
-
-                        nft.methods.tokenURI(item.tokenId).call().then(uri => {
-                            fetch(uri)
-                                .then(response => {
-                                    return response.json();
-                                })
-                                .then(metadata => {
-                                    //console.log(metadata);
-
-                                    marketPlace.methods.getTotalPrice(item.itemId).call().then(function (totalPrice) {
-                                        //console.log(totalPrice);
-                                        items.push({
-                                            totalPrice,
-                                            itemId: item.itemId,
-                                            seller: item.seller,
-                                            name: metadata.name,
-                                            location: metadata.geocodedLocation,
-                                            image: metadata.image
+                                nft.methods.tokenURI(item.tokenId).call().then(uri => {
+                                    fetch(uri)
+                                        .then(response => {
+                                            return response.json();
                                         })
-                                        console.log(items);
+                                        .then(metadata => {
+                                            //console.log(metadata);
 
-                                        loadNftIntoMarketPlace(items[items.length - 1], items.length - 1);
+                                            marketPlace.methods.getTotalPrice(item.itemId).call().then(function (totalPrice) {
+                                                //console.log(totalPrice);
+                                                items.push({
+                                                    totalPrice,
+                                                    itemId: item.itemId,
+                                                    seller: item.seller,
+                                                    name: metadata.name,
+                                                    location: metadata.geocodedLocation,
+                                                    image: metadata.image
+                                                })
+                                                console.log(items);
 
-                                    });
+                                                loadNftIntoMarketPlace(items[items.length - 1], items.length - 1);
+
+                                            });
+                                        });
                                 });
+                            }
+
                         });
                     }
                 });
@@ -182,7 +206,7 @@ function loadNftIntoMarketPlace(item, j) {
                         <h5 class="card-title">Carbon Emission : ${item.itemId}</h5>
                         <p class="card-text">Longitude: <strong>${item.location.longitude}  </strong> Latitude: <strong>${item.location.latitude} </strong></p>
                         <p class="card-text">Price :<strong>${item.totalPrice} </strong></p>
-                        <button type="button" class="btn btn-primary buyNowNftIndex" style="float:right;margin-bottom:10px; font-size:12px;">Buy Now</button>
+                        <button type="button" class="btn btn-primary buyNowNftIndex" data-id="${item.itemId} ${item.totalPrice}" style="float:right;margin-bottom:10px; font-size:12px;">Buy Now</button>
                       </div>
                     </div>`;
 
@@ -192,11 +216,3 @@ function loadNftIntoMarketPlace(item, j) {
 
 //Call the initiatie process for loading all NFT
 callContractForLoading();
-
-
-//Event handler for buy nft
-$(document).on('click', '.buyNowNftIndex', function () {
-    alert('We are working hard to make it work!!!');
-
-
-});
