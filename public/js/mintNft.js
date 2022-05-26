@@ -1,6 +1,18 @@
 firebase.initializeApp(firebaseConfig);
 
+const isMetaMaskInstalled = () => {
+    //Have to check the ethereum binding on the window object to see if it's installed
+    const { ethereum } = window;
+    return Boolean(ethereum && ethereum.isMetaMask);
+};
+
 firebase.auth().onAuthStateChanged(function (user) {
+    if (isMetaMaskInstalled) {
+        ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
+            document.getElementById('loadWalletAccount').innerText = accounts[0] || 'Connect Wallet';
+        });
+    }
+
     if (user != null) {
         if (user.emailVerified) {
             document.getElementById('loggedInUserId').innerText = user.email;
@@ -177,12 +189,6 @@ const callContractForLoading = (uri, price) => {
                 });
         });
 
-};
-
-const isMetaMaskInstalled = () => {
-    //Have to check the ethereum binding on the window object to see if it's installed
-    const { ethereum } = window;
-    return Boolean(ethereum && ethereum.isMetaMask);
 };
 
 const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, price) => {

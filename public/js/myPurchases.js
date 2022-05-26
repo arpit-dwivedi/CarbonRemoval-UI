@@ -1,6 +1,21 @@
 firebase.initializeApp(firebaseConfig);
 
+const isMetaMaskInstalled = () => {
+    //Have to check the ethereum binding on the window object to see if it's installed
+    const { ethereum } = window;
+    return Boolean(ethereum && ethereum.isMetaMask);
+};
+
 firebase.auth().onAuthStateChanged(function (user) {
+    if (isMetaMaskInstalled) {
+        ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
+            document.getElementById('loadWalletAccount').innerText = accounts[0] || 'Connect Wallet';
+            if (!accounts[0]) {
+                window.location.href = "connectMetamask.html";
+            }
+        });
+    }
+
     if (user != null) {
         if (user.emailVerified) {
             document.getElementById('loggedInUserId').innerText = user.email;
@@ -10,11 +25,13 @@ firebase.auth().onAuthStateChanged(function (user) {
         }
         else {
             confirm('You need to verify your email before accessing this feature !!!');
-            window.location.replace("index.html");
+            window.location.replace("login.html");
         }
-    } else {
-        confirm('You need to be logged in to perform this activity !!!');
-        window.location.replace("index.html");
+    }
+    else {
+        $('.UserIsFarmer').hide();
+        $('.NotAlreadyRegistered').show();
+
     }
 });
 
@@ -77,15 +94,11 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
     loadMarketplaceData(nft, nftAbi, nftContractAddress, marketPlace, marketPlaceAbi, marketPlaceContractAddress);
 
 };
-const isMetaMaskInstalled = () => {
-    //Have to check the ethereum binding on the window object to see if it's installed
-    const { ethereum } = window;
-    return Boolean(ethereum && ethereum.isMetaMask);
-};
+
 const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace, marketPlaceAbi, marketPlaceContractAddress) => {
     let items = []
     marketPlace.methods.itemCount().call().then(function (itemCount) {
-        console.log(itemCount);
+        //console.log(itemCount);
 
 
         for (let i = 1; i <= itemCount; i++) {
@@ -108,7 +121,7 @@ const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace,
 
                                     if (isMetaMaskInstalled) {
                                         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-                                            if (item.buyer == accounts[0]) {
+                                            if (item.buyer.toLowerCase() == accounts[0].toLowerCase()) {
                                                 items.push({
                                                     totalPrice,
                                                     itemId: item.itemId,
@@ -122,10 +135,16 @@ const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace,
                                                 loadNftIntoMarketPlace(items[items.length - 1], items.length - 1);
 
                                             }
+                                            document.getElementById('loaderDiv').hidden = true;
+                                            document.getElementById('textInfoDiv').hidden = false;
+
                                             // minNft(accounts[0], nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace, price);
                                         });
                                     }
-
+                                    else {
+                                        document.getElementById('loaderDiv').hidden = true;
+                                        document.getElementById('textInfoDiv').hidden = false;
+                                    }
 
                                 });
                             });
@@ -149,6 +168,7 @@ function loadNftIntoMarketPlace(item, j) {
                     </div>`;
 
     document.getElementById('bodyForCards').innerHTML += childDiv;
+    document.getElementById('loaderDiv').hidden = true;
 }
 
 //Call the initiatie process for loading all NFT
