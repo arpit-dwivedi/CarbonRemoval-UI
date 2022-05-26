@@ -1,8 +1,22 @@
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+//Created check function to see if the MetaMask extension is installed
+const isMetaMaskInstalled = () => {
+    //Have to check the ethereum binding on the window object to see if it's installed
+    const { ethereum } = window;
+    return Boolean(ethereum && ethereum.isMetaMask);
+};
+
+
 //handles user auth
 firebase.auth().onAuthStateChanged(function (user) {
+    if (isMetaMaskInstalled) {
+        ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
+            document.getElementById('loadWalletAccount').innerText = accounts[0] || 'Connect Wallet';
+        });
+    }
+
     if (user != null) {
         if (user.emailVerified) {
             document.getElementById('loggedInUserId').innerText = user.email;
@@ -33,18 +47,12 @@ function logout() {
     });
 }
 
-function connectMetamask(){
+function connectMetamask() {
     const forwarderOrigin = '';
     const onboardButton = document.getElementById('connectButton');
     const getAccountsButton = document.getElementById('getAccounts');
     const getAccountsResult = document.getElementById('getAccountsResult');
     const onboarding = new MetaMaskOnboarding({ forwarderOrigin });
-    //Created check function to see if the MetaMask extension is installed
-    const isMetaMaskInstalled = () => {
-        //Have to check the ethereum binding on the window object to see if it's installed
-        const { ethereum } = window;
-        return Boolean(ethereum && ethereum.isMetaMask);
-    };
 
 
     const MetaMaskClientCheck = () => {

@@ -27,18 +27,20 @@
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
             transition: 0.3s;
             border-radius: 20px 20px;
+            background-color:azure;
         }
     </style>
 
 </head>
 
-<body>
+<body class="bg-gradient-primary bg-register-image">
 
-    <div id="">
+    <div id="mainIndexNavBar">
         <!-- Begin NavBar Content -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Market Place</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -50,6 +52,9 @@
 
                     <li class="nav-item UserIsFarmer">
                         <a class="nav-link" href="mintNft.html">Mint NFT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mypurchases.html">My Purchases</a>
                     </li>
                 </ul>
 
@@ -67,7 +72,8 @@
                     </li>
 
                     <li class="nav-item dropdown UserIsFarmer">
-                        <a class="nav-link dropdown-toggle" href="#" id="loggedInUserId" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                        <a class="nav-link dropdown-toggle" href="#" id="loggedInUserId" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
                         </div>
@@ -78,10 +84,10 @@
         <!-- End NavBar Content -->
     </div>
 
-    <div id="">
+    <div>
         <!-- Begin Page Content -->
         <div>
-            <div class="container connectWalletForm" style="padding:40px;width:60%;margin-top:100px;">
+            <div class="container connectWalletForm p-5" style="padding:40px;width:42%;margin-top:50px;">
                 <!-- Page Heading -->
                 <h1 class="h3 mb-4 text-gray-800" style="text-align:center;">Connect to Wallet</h1>
                 <button href="#" id="connectButton" onclick="connectMetamask()" class="btn btn-primary btn-user btn-block">Connect</button>
