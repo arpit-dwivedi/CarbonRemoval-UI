@@ -155,7 +155,7 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
                     
                     if (isMetaMaskInstalled) {
                         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-                            if (!item.sold && item.seller.toLowerCase() != accounts[0].toLowerCase()) {
+                            if (!item.sold && item.seller.toLowerCase() == accounts[0].toLowerCase()) {
                                 // get uri url from nft contract
 
                                 nft.methods.tokenURI(item.tokenId).call().then(uri => {
