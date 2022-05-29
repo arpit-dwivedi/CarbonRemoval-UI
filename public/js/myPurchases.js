@@ -144,6 +144,8 @@ const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace,
                                     else {
                                         document.getElementById('loaderDiv').hidden = true;
                                         document.getElementById('textInfoDiv').hidden = false;
+                                        alert("Please connect to the Wallet!");
+                                        window.location.replace("connectMetamask.html");
                                     }
 
                                 });
