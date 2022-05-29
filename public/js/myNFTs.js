@@ -7,6 +7,11 @@ const isMetaMaskInstalled = () => {
     return Boolean(ethereum && ethereum.isMetaMask);
 };
 
+$(function () {
+    $("#includedContent").load("navBarHeader.html");
+});
+
+
 //handles user auth
 firebase.auth().onAuthStateChanged(function (user) {
     if (isMetaMaskInstalled) {
@@ -205,18 +210,35 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
 };
 
 function loadNftIntoMarketPlace(item, j) {
-    var childDiv = `<div class="card col-md-3 col-sm-3" style="margin:5px;">
+    if (item.sold) {
+        var childDiv = `<div class="card col-md-3 col-sm-3" style="margin:5px;">
                       <img class="img-fluid img-thumbnail" src="${item.image}" alt="Card image cap">
                       <div class="card-body">
                         <h5 class="card-title">Carbon Emission : ${item.itemId}</h5>
                         <p class="card-text">Longitude: <strong>${item.location.longitude}  </strong> Latitude: <strong>${item.location.latitude} </strong></p>
                         <p class="card-text">Price :<strong>${item.totalPrice} </strong></p>
-                        <button type="button" class="btn btn-primary buyNowNftIndex" data-id="${item.itemId} ${item.totalPrice}" style="float:right;margin-bottom:10px; font-size:12px;">Buy Now</button>
+                        <button type="button" class="btn btn-danger" style="float:right;margin-bottom:10px; font-size:12px;">Sold</button>
                       </div>
                     </div>`;
 
-    document.getElementById('bodyForCards').innerHTML += childDiv;
-    document.getElementById('loaderDiv').hidden = true;
+        document.getElementById('bodyForCards').innerHTML += childDiv;
+        document.getElementById('loaderDiv').hidden = true;
+    }
+    else {
+        var childDiv = `<div class="card col-md-3 col-sm-3" style="margin:5px;">
+                      <img class="img-fluid img-thumbnail" src="${item.image}" alt="Card image cap">
+                      <div class="card-body">
+                        <h5 class="card-title">Carbon Emission : ${item.itemId}</h5>
+                        <p class="card-text">Longitude: <strong>${item.location.longitude}  </strong> Latitude: <strong>${item.location.latitude} </strong></p>
+                        <p class="card-text">Price :<strong>${item.totalPrice} </strong></p>
+                        <button type="button" class="btn btn-primary" style="float:right;margin-bottom:10px; font-size:12px;">Listed</button>
+                      </div>
+                    </div>`;
+
+        document.getElementById('bodyForCards').innerHTML += childDiv;
+        document.getElementById('loaderDiv').hidden = true;
+    }
+
 }
 
 //Call the initiatie process for loading all NFT

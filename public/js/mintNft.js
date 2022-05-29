@@ -6,6 +6,10 @@ const isMetaMaskInstalled = () => {
     return Boolean(ethereum && ethereum.isMetaMask);
 };
 
+$(function () {
+    $("#includedContent").load("navBarHeader.html");
+});
+
 firebase.auth().onAuthStateChanged(function (user) {
     if (isMetaMaskInstalled) {
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {

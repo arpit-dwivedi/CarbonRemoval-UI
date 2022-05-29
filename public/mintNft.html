@@ -15,9 +15,8 @@
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -36,104 +35,61 @@
 </head>
 
 <body class="bg-gradient-primary bg-register-image">
-    <header id="portfolio">
-        <div class="w3-container">
-            <!-- Begin NavBar Content -->
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">Market Place</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <div id="mainIndexNavBar">
+        <!-- Begin NavBar Content -->
+        <div id="includedContent"></div>
+        <!-- End NavBar Content -->
+    </div>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-                        </li>
+    <div class="w3-container">
 
-                        <li class="nav-item UserIsFarmer">
-                            <a class="nav-link" href="mintNft.html">Mint NFT</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="mypurchases.html">My Purchases</a>
-                        </li>
-                    </ul>
 
-                    <ul class="navbar-nav narvbar-right">
-                        <li class="nav-item">
-                            <a id="loadWalletAccount" class="nav-link" href="connectMetamask.html">Connect Wallet</a>
-                        </li>
-
-                        <li class="nav-item NotAlreadyRegistered">
-                            <a class="nav-link" href="login.html">Login</a>
-                        </li>
-
-                        <li class="nav-item NotAlreadyRegistered">
-                            <a class="nav-link" href="registerfarmer.html">Sign Up</a>
-                        </li>
-
-                        <li class="nav-item dropdown UserIsFarmer">
-                            <a class="nav-link dropdown-toggle" href="#" id="loggedInUserId" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#" onclick="logout()">Logout</a>
-                            </div>
-                        </li>
-                    </ul>
+        <!-- Begin Page Content -->
+        <div>
+            <div class="container nftForm p-5" style="padding:40px;width:42%;margin-top:50px;">
+                <!-- Page Heading -->
+                <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">Mint NFT</h1>
                 </div>
-            </nav>
-            <!-- End NavBar Content -->
-            <!-- Begin Page Content -->
-            <div>
-                <div class="container nftForm p-5" style="padding:40px;width:42%;margin-top:50px;">
-                    <!-- Page Heading -->
-                    <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4">Mint NFT</h1>
+
+                <form class="user" id="mintNFT_form" autocomplete="off">
+                    <div class="form-group">
+                        <!-- <label for="nftTitle">NFT Name</label> -->
+                        <input type="text" class="form-control form-control-user" id="nftTitle" required="true"
+                               placeholder="NFT Name">
                     </div>
+                    <div class="form-group">
+                        <!-- <label for="longitude">Longitude</label> -->
+                        <input type="text" class="form-control  form-control-user" id="longitude" required="true"
+                               pattern="^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$"
+                               placeholder="Longitude">
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="jbTtle">Latitude</label> -->
+                        <input type="text" class="form-control   form-control-user" id="latitude" required="true"
+                               pattern="^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$"
+                               placeholder="Latitude">
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="formFileSm" class="form-label">Image</label> -->
+                        <input class="form-control  form-control-sm   form-control-user" id="image" type="file"
+                               placeholder="Upload Image">
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="price">Price</label> -->
+                        <input type="text" class="form-control form-control-user" id="price" required="true"
+                               placeholder="Price">
+                    </div>
+                    <!-- <a href="#" onclick="postJob()" class="btn btn-primary btn-user btn-block"> -->
+                    <a href="#" onclick="mintNft()" class="btn btn-primary btn-user btn-block">Mint</a>
+                </form>
 
-                    <form class="user" id="mintNFT_form" autocomplete="off">
-                        <div class="form-group">
-                            <!-- <label for="nftTitle">NFT Name</label> -->
-                            <input type="text" class="form-control form-control-user" id="nftTitle" required="true"
-                                placeholder="NFT Name">
-                        </div>
-                        <div class="form-group">
-                            <!-- <label for="longitude">Longitude</label> -->
-                            <input type="text" class="form-control  form-control-user" id="longitude" required="true"
-                                pattern="^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$"
-                                placeholder="Longitude">
-                        </div>
-                        <div class="form-group">
-                            <!-- <label for="jbTtle">Latitude</label> -->
-                            <input type="text" class="form-control   form-control-user" id="latitude" required="true"
-                                pattern="^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$"
-                                placeholder="Latitude">
-                        </div>
-                        <div class="form-group">
-                            <!-- <label for="formFileSm" class="form-label">Image</label> -->
-                            <input class="form-control  form-control-sm   form-control-user" id="image" type="file"
-                                placeholder="Upload Image">
-                        </div>
-                        <div class="form-group">
-                            <!-- <label for="price">Price</label> -->
-                            <input type="text" class="form-control form-control-user" id="price" required="true"
-                                placeholder="Price">
-                        </div>
-                        <!-- <a href="#" onclick="postJob()" class="btn btn-primary btn-user btn-block"> -->
-                        <a href="#" onclick="mintNft()" class="btn btn-primary btn-user btn-block">Mint</a>
-                    </form>
-
-                    <span id="contents"></span>
-                </div>
+                <span id="contents"></span>
             </div>
-            <!-- End Page Content -->
         </div>
+        <!-- End Page Content -->
+    </div>
 
-
-    </header>
-    <!-- /.container-fluid -->
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -149,6 +105,7 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase.js"></script>
+    <script src="js/require.js"></script>
 
     <script>
         // Your web app's Firebase configuration
