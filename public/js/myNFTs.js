@@ -7,6 +7,11 @@ const isMetaMaskInstalled = () => {
     return Boolean(ethereum && ethereum.isMetaMask);
 };
 
+$(function () {
+    $("#includedContent").load("navBarHeader.html");
+});
+
+
 //handles user auth
 firebase.auth().onAuthStateChanged(function (user) {
     if (isMetaMaskInstalled) {

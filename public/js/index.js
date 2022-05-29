@@ -1,3 +1,7 @@
+$(function () {
+    $("#includedContent").load("navBarHeader.html");
+});
+
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
@@ -125,7 +129,6 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 
     //Event handler for buy nft
     $(document).on('click', '.buyNowNftIndex', function () {
-        alert('We are working hard to make it work!!!');
         var dataId = $(this).data("id").split(" ");
 
         var itemId = dataId[0];
@@ -141,67 +144,78 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
             });
         }
 
-        
+
     });
 };
 
 const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marketPlaceAbi, marketPlaceContractAddress) => {
     let items = []
-    marketPlace.methods.itemCount().call().then(function (itemCount) {
-        console.log(itemCount);
-        if (itemCount > 0) {
-            for (let i = 1; i <= itemCount; i++) {
-                marketPlace.methods.items(i).call().then(function (item) {
-                    
-                    if (isMetaMaskInstalled) {
-                        ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-                            if (!item.sold && item.seller.toLowerCase() != accounts[0].toLowerCase()) {
-                                // get uri url from nft contract
 
-                                nft.methods.tokenURI(item.tokenId).call().then(uri => {
-                                    fetch(uri)
-                                        .then(response => {
-                                            return response.json();
-                                        })
-                                        .then(metadata => {
-                                            //console.log(metadata);
+    if (isMetaMaskInstalled) {
 
-                                            marketPlace.methods.getTotalPrice(item.itemId).call().then(function (totalPrice) {
-                                                //console.log(totalPrice);
-                                                items.push({
-                                                    totalPrice,
-                                                    itemId: item.itemId,
-                                                    seller: item.seller,
-                                                    name: metadata.name,
-                                                    location: metadata.geocodedLocation,
-                                                    image: metadata.image
-                                                })
-                                                console.log(items);
+        ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
+            if (accounts[0]) {
+                marketPlace.methods.itemCount().call().then(function (itemCount) {
+                    console.log(itemCount);
+                    if (itemCount > 0) {
+                        for (let i = 1; i <= itemCount; i++) {
+                            marketPlace.methods.items(i).call().then(function (item) {
+                                if (!item.sold && item?.seller && item.seller.toLowerCase() != accounts[0]?.toLowerCase()) {
+                                    // get uri url from nft contract
 
-                                                loadNftIntoMarketPlace(items[items.length - 1], items.length - 1);
+                                    nft.methods.tokenURI(item.tokenId).call().then(uri => {
+                                        fetch(uri)
+                                            .then(response => {
+                                                return response.json();
+                                            })
+                                            .then(metadata => {
+                                                //console.log(metadata);
 
+                                                marketPlace.methods.getTotalPrice(item.itemId).call().then(function (totalPrice) {
+                                                    //console.log(totalPrice);
+                                                    items.push({
+                                                        totalPrice,
+                                                        itemId: item.itemId,
+                                                        seller: item.seller,
+                                                        name: metadata.name,
+                                                        location: metadata.geocodedLocation,
+                                                        image: metadata.image
+                                                    })
+                                                    console.log(items);
+
+                                                    loadNftIntoMarketPlace(items[items.length - 1], items.length - 1);
+
+                                                });
                                             });
-                                        });
-                                });
-                            }
+                                    });
+                                }
 
-                        });
+                            });
+                        }
 
                     }
                     else {
-                        alert("Please connect to the Wallet!");
-                        window.location.replace("connectMetamask.html");
+                        document.getElementById('loaderDiv').hidden = true;
+                        document.getElementById('textInfoDiv').hidden = false;
                     }
+
                 });
+
             }
 
-        }
-        else {
-            document.getElementById('loaderDiv').hidden = true;
-            document.getElementById('textInfoDiv').hidden = false;
-        }
+            else {
+                alert("Please connect to the Wallet!");
+                window.location.replace("connectMetamask.html");
+            }
 
-    });
+        });
+    }
+    else {
+        alert("Please connect to the Wallet!");
+        window.location.replace("connectMetamask.html");
+    }
+
+
 };
 
 function loadNftIntoMarketPlace(item, j) {

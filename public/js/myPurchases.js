@@ -6,6 +6,10 @@ const isMetaMaskInstalled = () => {
     return Boolean(ethereum && ethereum.isMetaMask);
 };
 
+$(function () {
+    $("#includedContent").load("navBarHeader.html");
+});
+
 firebase.auth().onAuthStateChanged(function (user) {
     if (isMetaMaskInstalled) {
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
@@ -121,7 +125,8 @@ const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace,
 
                                     if (isMetaMaskInstalled) {
                                         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-                                            if (item.buyer.toLowerCase() == accounts[0].toLowerCase()) {
+
+                                            if (item?.buyer && item.buyer.toLowerCase() == accounts[0].toLowerCase()) {
                                                 items.push({
                                                     totalPrice,
                                                     itemId: item.itemId,
