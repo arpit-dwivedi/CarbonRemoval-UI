@@ -137,7 +137,7 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
         console.log(itemId, totalPrice);
         if (isMetaMaskInstalled) {
             ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-                marketPlace.methods.purchaseItem(itemId).send({ from: accounts[0] }).then(function (response) {
+                marketPlace.methods.purchaseItem(itemId).send({ from: accounts[0], value: totalPrice }).then(function (response) {
                     console.log(response);
                 });
 
@@ -160,6 +160,7 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
                     if (itemCount > 0) {
                         for (let i = 1; i <= itemCount; i++) {
                             marketPlace.methods.items(i).call().then(function (item) {
+                                //console.log(item);
                                 if (!item.sold && item?.seller && item.seller.toLowerCase() != accounts[0]?.toLowerCase()) {
                                     // get uri url from nft contract
 
