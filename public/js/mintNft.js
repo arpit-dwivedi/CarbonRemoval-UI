@@ -49,7 +49,7 @@ var database = firebase.database();
 var ref = database.ref("MintNFT");
 
 function mintNft() {
-    console.log("-------------")
+    //console.log("-------------")
     const mintNFTForm = document.querySelector("#mintNFT_form");
     const nftTitle = mintNFTForm["nftTitle"].value;
     const longitude = mintNFTForm["longitude"].value;
@@ -76,7 +76,7 @@ function mintNft() {
         };
         // let price = price;
         //ref.push(data);
-        console.log(price);
+        //console.log(price);
         readFile(data, price);
         //window.location.replace("mintNft.html");
     } else {
@@ -90,10 +90,10 @@ function readFile(data, price) {
     //Selects first File and assigns it to file
     var file = files[0];
 
-    console.log(files, file);
+    //console.log(files, file);
 
     if (file.type == "image/jpeg") {
-        console.log("file is okay");
+        //console.log("file is okay");
         callPinataIpfs(file, data, price);
 
     }
@@ -119,7 +119,7 @@ const callPinataIpfs = (file, data, price) => {
     fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", requestOptions)
         .then(response => response.json())
         .then(result => {
-            console.log(result);
+            //console.log(result);
             if (!result.isDuplicate) {
                 data.image = "https://gateway.pinata.cloud/ipfs/" + result.IpfsHash;
                 uploadPinataImageWithMetaDeta(data, price);
@@ -130,7 +130,7 @@ const callPinataIpfs = (file, data, price) => {
 
         })
         .catch(error => {
-            console.log('error', error)
+            //console.log('error', error)
         });
 }
 
@@ -204,7 +204,7 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
     if (isMetaMaskInstalled) {
 
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-            console.log(accounts[0], uri);
+            //console.log(accounts[0], uri);
             minNft(accounts[0], nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace, price);
         });
     }
@@ -214,18 +214,18 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 
 const minNft = (account, nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace, price) => {
     nft.methods.mint(uri).send({ from: account }).then(function (result) {
-        console.log(result);
+        //console.log(result);
 
         nft.methods.tokenCount().call().then(id => {
-            console.log("tokenCount " + id)
+            //console.log("tokenCount " + id)
             nft.methods.setApprovalForAll(marketPlaceContractAddress.address, true).send({ from: account }).then(function (result) {
-                console.log("result : ");
-                console.log(result);
-                const listingPrice = price;
+                //console.log("result : ");
+                //console.log(result);
+                const listingPrice = web3.utils.toWei(price);
 
                 marketPlace.methods.makeItem(nftContractAddress.address, id, listingPrice).send({ from: account }).then(function (data) {
-                    console.log("data : ");
-                    console.log(data);
+                    //console.log("data : ");
+                    //console.log(data);
                     window.location.href = "index.html";
                 }).catch(error => console.log(error));
 

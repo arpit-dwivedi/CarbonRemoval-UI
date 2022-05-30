@@ -125,7 +125,7 @@ const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace,
 
                                     if (isMetaMaskInstalled) {
                                         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-
+                                            //console.log(item);
                                             if (item?.buyer && item.buyer.toLowerCase() == accounts[0].toLowerCase()) {
                                                 items.push({
                                                     totalPrice,
@@ -135,7 +135,7 @@ const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace,
                                                     location: metadata.geocodedLocation,
                                                     image: metadata.image
                                                 })
-                                                console.log(items);
+                                                //console.log(items);
 
                                                 loadNftIntoMarketPlace(items[items.length - 1], items.length - 1);
 
@@ -161,6 +161,16 @@ const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace,
         }
 
     });
+    //ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
+
+    //    var filter = marketPlace.events.Bought(
+    //         null, null, null, null, null, accounts[0]);
+    //    console.log(filter);
+    //    console.log(marketPlace.methods.queryFilter(filter));
+    //});
+
+    
+    
 };
 
 function loadNftIntoMarketPlace(item, j) {
