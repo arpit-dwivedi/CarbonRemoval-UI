@@ -221,7 +221,7 @@ const minNft = (account, nftAbi, nftContractAddress, marketPlaceAbi, marketPlace
             nft.methods.setApprovalForAll(marketPlaceContractAddress.address, true).send({ from: account }).then(function (result) {
                 console.log("result : ");
                 console.log(result);
-                const listingPrice = web3.utils.toWei(price)
+                const listingPrice = price;
 
                 marketPlace.methods.makeItem(nftContractAddress.address, id, listingPrice).send({ from: account }).then(function (data) {
                     console.log("data : ");
