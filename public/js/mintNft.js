@@ -14,6 +14,10 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (isMetaMaskInstalled) {
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             document.getElementById('loadWalletAccount').innerText = accounts[0] || 'Connect Wallet';
+            if (!accounts[0]) {
+                alert("Please connect to the Wallet!");
+                window.location.replace("connectMetamask.html");
+            }
         });
     }
 
