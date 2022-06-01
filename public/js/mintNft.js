@@ -44,7 +44,23 @@ function logout() {
     });
 }
 
-// Get a reference to the database service
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+span.onclick = function () {
+    modal.style.display = "none";
+    window.location.href = "mintNft.html";
+    $('#loaderDiv').show();
+    document.getElementById('resultTextMintNft').textContent = '';
+}
+
+
 var database = firebase.database();
 var ref = database.ref("MintNFT");
 
@@ -56,7 +72,6 @@ function mintNft() {
     const latitude = mintNFTForm["latitude"].value;
     const image = mintNFTForm["image"].value;
     const price = mintNFTForm["price"].value;
-
 
     if (
         nftTitle != "" &&
@@ -74,11 +89,10 @@ function mintNft() {
             name: nftTitle,
 
         };
-        // let price = price;
-        //ref.push(data);
-        //console.log(price);
+
+        document.getElementById("myModal").style.display = "block";
+        
         readFile(data, price);
-        //window.location.replace("mintNft.html");
     } else {
         alert("Fill in all the places to post...");
     }
@@ -125,7 +139,8 @@ const callPinataIpfs = (file, data, price) => {
                 uploadPinataImageWithMetaDeta(data, price);
             }
             else {
-                alert('Please use different image as this  already being used!!!')
+                $('#loaderDiv').hide();
+                document.getElementById('resultTextMintNft').textContent='Please use different image as this  already being used!!!';
             }
 
         })
@@ -155,7 +170,8 @@ const uploadPinataImageWithMetaDeta = (data, price) => {
                 callContractForLoading("https://gateway.pinata.cloud/ipfs/" + result.IpfsHash, price)
             }
             else {
-                alert('Metadeta already Exist, please provide different to proceed!!!')
+                $('#loaderDiv').hide();
+                document.getElementById('resultTextMintNft').textContent = 'Metadeta already Exist, please provide different to proceed!!!';
             }
         })
         .catch(error => console.log('error', error));
@@ -224,13 +240,21 @@ const minNft = (account, nftAbi, nftContractAddress, marketPlaceAbi, marketPlace
                 const listingPrice = web3.utils.toWei(price);
 
                 marketPlace.methods.makeItem(nftContractAddress.address, id, listingPrice).send({ from: account }).then(function (data) {
-                    //console.log("data : ");
-                    //console.log(data);
-                    window.location.href = "index.html";
-                }).catch(error => console.log(error));
+                    $('#loaderDiv').hide();
+
+                    document.getElementById('resultTextMintNft').textContent = 'NFT Minted Successfully';
+                }).catch(error => {
+                    $('#loaderDiv').hide();
+                    document.getElementById('resultTextMintNft').textContent = error.message;
+                    console.log(error.message)
+                });
 
             });
         });
-    });
+    }).catch(error => {
+        $('#loaderDiv').hide();
+        document.getElementById('resultTextMintNft').textContent = error.message;
+        console.log(error.message)
+    });;
 
 };
