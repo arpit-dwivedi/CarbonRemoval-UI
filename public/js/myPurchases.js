@@ -167,7 +167,7 @@ const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace,
             'Bought', // change if your looking for a different event
             { fromBlock: 0, toBlock: 'latest' }
         ).then(function (events) {
-            console.log(events);
+            //console.log(events);
 
             for (var i = 0; i < events.length; i++) {
 
