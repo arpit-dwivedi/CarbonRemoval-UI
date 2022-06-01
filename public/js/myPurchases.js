@@ -15,7 +15,8 @@ firebase.auth().onAuthStateChanged(function (user) {
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             document.getElementById('loadWalletAccount').innerText = accounts[0] || 'Connect Wallet';
             if (!accounts[0]) {
-                window.location.href = "connectMetamask.html";
+                alert("Please connect to the Wallet!");
+                window.location.replace("connectMetamask.html");
             }
         });
     }
@@ -48,12 +49,6 @@ function logout() {
         alert(error.message);
     });
 }
-
-// Get a reference to the database service
-$(document).on('click', '.buyNowNftIndex', function () {
-    alert('We are working hard to make it work!!!');
-});
-
 
 const web3 = AlchemyWeb3.createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/qRiwHS9t7GVkOSDQJCXocuGu84EsYVwZ");
 
