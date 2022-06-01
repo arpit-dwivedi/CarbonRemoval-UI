@@ -100,67 +100,7 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 };
 
 const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace, marketPlaceAbi, marketPlaceContractAddress) => {
-    let items = []
-    //marketPlace.methods.itemCount().call().then(function (itemCount) {
-    //    //console.log(itemCount);
-
-
-    //    for (let i = 1; i <= itemCount; i++) {
-    //        marketPlace.methods.items(i).call().then(function (item) {
-    //            //console.log(item);
-
-    //            if (!item.sold) {
-    //                // get uri url from nft contract
-
-    //                nft.methods.tokenURI(item.tokenId).call().then(uri => {
-    //                    fetch(uri)
-    //                        .then(response => {
-    //                            return response.json();
-    //                        })
-    //                        .then(metadata => {
-    //                            //console.log(metadata);
-
-    //                            marketPlace.methods.getTotalPrice(item.itemId).call().then(function (totalPrice) {
-    //                                //console.log(totalPrice);
-
-    //                                if (isMetaMaskInstalled) {
-    //                                    ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-    //                                        //console.log(item);
-    //                                        if (item?.buyer && item.buyer.toLowerCase() == accounts[0].toLowerCase()) {
-    //                                            items.push({
-    //                                                totalPrice,
-    //                                                itemId: item.itemId,
-    //                                                seller: item.seller,
-    //                                                name: metadata.name,
-    //                                                location: metadata.geocodedLocation,
-    //                                                image: metadata.image
-    //                                            })
-    //                                            //console.log(items);
-
-    //                                            loadNftIntoMarketPlace(items[items.length - 1], items.length - 1);
-
-    //                                        }
-    //                                        document.getElementById('loaderDiv').hidden = true;
-    //                                        document.getElementById('textInfoDiv').hidden = false;
-
-    //                                        // minNft(accounts[0], nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace, price);
-    //                                    });
-    //                                }
-    //                                else {
-    //                                    document.getElementById('loaderDiv').hidden = true;
-    //                                    document.getElementById('textInfoDiv').hidden = false;
-    //                                    alert("Please connect to the Wallet!");
-    //                                    window.location.replace("connectMetamask.html");
-    //                                }
-
-    //                            });
-    //                        });
-    //                });
-    //            }
-    //        });
-    //    }
-
-    //});
+    let items = [];
 
     ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
         var filter = marketPlace.getPastEvents(
