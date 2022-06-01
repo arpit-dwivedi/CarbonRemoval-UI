@@ -48,6 +48,22 @@ function logout() {
     });
 }
 
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+span.onclick = function () {
+    modal.style.display = "none";
+    window.location.href = "index.html";
+    $('#loaderDivModal').show();
+    document.getElementById('resultTextMintNft').textContent = '';
+}
+
 const web3 = AlchemyWeb3.createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/qRiwHS9t7GVkOSDQJCXocuGu84EsYVwZ");
 
 const callContractForLoading = () => {
@@ -82,6 +98,7 @@ const callContractForLoading = () => {
 
 };
 
+
 const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress) => {
 
     const nft = new web3.eth.Contract(nftAbi.abi, nftContractAddress.address);
@@ -92,18 +109,36 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 
     //Event handler for buy nft
     $(document).on('click', '.buyNowNftIndex', function () {
+
         var dataId = $(this).data("id").split(" ");
 
         var itemId = dataId[0];
         var totalPrice = dataId[1];
 
-        console.log(itemId, totalPrice);
+        //console.log(itemId, totalPrice);
         if (isMetaMaskInstalled) {
             ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-                marketPlace.methods.purchaseItem(itemId).send({ from: accounts[0], value: totalPrice }).then(function (response) {
-                    console.log(response);
-                });
+                if (accounts[0]) {
+                    document.getElementById("myModal").style.display = "block";
 
+                    marketPlace.methods.purchaseItem(itemId).send({ from: accounts[0], value: totalPrice }).then(function (response) {
+                        $('#loaderDivModal').hide();
+                        document.getElementById('resultTextMintNft').textContent = response;
+                        //console.log(response);
+                    }).catch(error => {
+                        $('#loaderDivModal').hide();
+                        document.getElementById('resultTextMintNft').textContent = error.message;
+                    });
+                }
+                else {
+                    alert("Please connect to the Wallet!");
+                    window.location.replace("connectMetamask.html");
+                }
+
+
+            }).catch(error => {
+                $('#loaderDivModal').hide();
+                document.getElementById('resultTextMintNft').textContent = error.message;
             });
         }
 
@@ -119,7 +154,7 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             if (accounts[0]) {
                 marketPlace.methods.itemCount().call().then(function (itemCount) {
-                    console.log(itemCount);
+                    //console.log(itemCount);
                     if (itemCount > 0) {
                         for (let i = 1; i <= itemCount; i++) {
                             marketPlace.methods.items(i).call().then(function (item) {

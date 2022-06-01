@@ -39,11 +39,68 @@
             border-radius: 20px 20px;
         }
 
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
     </style>
 
 </head>
 
 <body class="bg-gradient-primary bg-register-image">
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content" style="width:50%">
+            <span class="close">&times;</span>
+
+            <div style="text-align:center">
+                <div id="loaderDivModal">
+                    <img src="./img/loaderTransparent.gif" alt="Loader" style="height:150px;width:150px;justify-content:center;" />
+                    <p style="margin-top:20px">Request Being Processed</p>
+                </div>
+
+                <p id="resultTextMintNft" style="color:black"></p>
+            </div>
+
+        </div>
+
+    </div>
 
     <div id="mainIndexNavBar">
         <!-- Begin NavBar Content -->
@@ -64,7 +121,7 @@
                     <img src="./img/loaderTrans1.gif" alt="Loader" style="height:150px;width:150px;justify-content:center;margin-top:100px;" />
                 </div>
                 <div id="textInfoDiv" hidden>
-                    <h5 id="textInfo">No Data Found</h5>
+                    <h5 id="textInfo" style="color:white">No Data Found</h5>
                 </div>
             </div>
             <!-- End page content -->

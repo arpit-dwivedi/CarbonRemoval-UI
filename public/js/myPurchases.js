@@ -49,12 +49,6 @@ function logout() {
     });
 }
 
-// Get a reference to the database service
-$(document).on('click', '.buyNowNftIndex', function () {
-    alert('We are working hard to make it work!!!');
-});
-
-
 const web3 = AlchemyWeb3.createAlchemyWeb3("https://eth-ropsten.alchemyapi.io/v2/qRiwHS9t7GVkOSDQJCXocuGu84EsYVwZ");
 
 const callContractForLoading = () => {
