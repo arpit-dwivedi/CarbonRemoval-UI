@@ -22,6 +22,11 @@ firebase.auth().onAuthStateChanged(function (user) {
             }
         });
     }
+    else {
+        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
+        window.location.replace("connectMetamask.html");
+    }
+
     if (user != null) {
         if (user.emailVerified) {
             document.getElementById('loggedInUserId').innerText = user.email;

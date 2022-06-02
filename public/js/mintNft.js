@@ -20,6 +20,10 @@ firebase.auth().onAuthStateChanged(function (user) {
             }
         });
     }
+    else {
+        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
+        window.location.replace("connectMetamask.html");
+    }
 
     if (user != null) {
         if (user.emailVerified) {
@@ -95,7 +99,7 @@ function mintNft() {
         };
 
         document.getElementById("myModal").style.display = "block";
-        
+
         readFile(data, price);
     } else {
         alert("Fill in all the places to post...");
@@ -144,7 +148,7 @@ const callPinataIpfs = (file, data, price) => {
             }
             else {
                 $('#loaderDiv').hide();
-                document.getElementById('resultTextMintNft').textContent='Please use different image as this  already being used!!!';
+                document.getElementById('resultTextMintNft').textContent = 'Please use different image as this  already being used!!!';
             }
 
         })
