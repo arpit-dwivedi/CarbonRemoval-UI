@@ -23,6 +23,11 @@ firebase.auth().onAuthStateChanged(function (user) {
             }
         });
     }
+    else {
+        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
+        window.location.replace("connectMetamask.html");
+    }
+
     if (user != null) {
         if (user.emailVerified) {
             document.getElementById('loggedInUserId').innerText = user.email;
@@ -103,7 +108,7 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
         if (itemCount > 0) {
             for (let i = 1; i <= itemCount; i++) {
                 marketPlace.methods.items(i).call().then(function (item) {
-                    
+
                     if (isMetaMaskInstalled) {
                         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
                             if (!item.sold && item.seller.toLowerCase() == accounts[0].toLowerCase()) {
