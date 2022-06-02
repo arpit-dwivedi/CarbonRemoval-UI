@@ -6,14 +6,20 @@ $(function () {
 firebase.initializeApp(firebaseConfig);
 
 const isMetaMaskInstalled = () => {
-    //Have to check the ethereum binding on the window object to see if it's installed
-    const { ethereum } = window;
-    return Boolean(ethereum && ethereum.isMetaMask);
+    try {
+        //Have to check the ethereum binding on the window object to see if it's installed
+        const { ethereum } = window;
+        return Boolean(ethereum && ethereum.isMetaMask);
+    }
+    catch (err) {
+        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
+        window.location.replace("connectMetamask.html");
+    }
 };
 
 //handles user auth
 firebase.auth().onAuthStateChanged(function (user) {
-    if (isMetaMaskInstalled) {
+    if (isMetaMaskInstalled()) {
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             document.getElementById('loadWalletAccount').innerText = accounts[0] || 'Connect Wallet';
             if (!accounts[0]) {
@@ -125,7 +131,7 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
         var totalPrice = dataId[1];
 
         //console.log(itemId, totalPrice);
-        if (isMetaMaskInstalled) {
+        if (isMetaMaskInstalled()) {
             ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
                 if (accounts[0]) {
                     document.getElementById("myModal").style.display = "block";
@@ -150,6 +156,10 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
                 document.getElementById('resultTextMintNft').textContent = error.message;
             });
         }
+        else {
+            alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
+            window.location.replace("connectMetamask.html");
+        }
 
 
     });
@@ -158,8 +168,7 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marketPlaceAbi, marketPlaceContractAddress) => {
     let items = []
 
-    if (isMetaMaskInstalled) {
-
+    if (isMetaMaskInstalled()) {
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             if (accounts[0]) {
                 marketPlace.methods.itemCount().call().then(function (itemCount) {
@@ -223,7 +232,7 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
         });
     }
     else {
-        alert("Please connect to the Wallet!");
+        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
         window.location.replace("connectMetamask.html");
     }
 

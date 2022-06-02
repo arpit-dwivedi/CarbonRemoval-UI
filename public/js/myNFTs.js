@@ -2,19 +2,24 @@
 firebase.initializeApp(firebaseConfig);
 
 const isMetaMaskInstalled = () => {
-    //Have to check the ethereum binding on the window object to see if it's installed
-    const { ethereum } = window;
-    return Boolean(ethereum && ethereum.isMetaMask);
+    try {
+        //Have to check the ethereum binding on the window object to see if it's installed
+        const { ethereum } = window;
+        return Boolean(ethereum && ethereum.isMetaMask);
+    }
+    catch (err) {
+        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
+        window.location.replace("connectMetamask.html");
+    }
 };
 
 $(function () {
     $("#includedContent").load("navBarHeader.html");
 });
 
-
 //handles user auth
 firebase.auth().onAuthStateChanged(function (user) {
-    if (isMetaMaskInstalled) {
+    if (isMetaMaskInstalled()) {
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             document.getElementById('loadWalletAccount').innerText = accounts[0] || 'Connect Wallet';
             if (!accounts[0]) {
@@ -109,7 +114,7 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
             for (let i = 1; i <= itemCount; i++) {
                 marketPlace.methods.items(i).call().then(function (item) {
 
-                    if (isMetaMaskInstalled) {
+                    if (isMetaMaskInstalled()) {
                         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
                             if (!item.sold && item.seller.toLowerCase() == accounts[0].toLowerCase()) {
                                 // get uri url from nft contract
@@ -145,7 +150,7 @@ const loadMarketplaceData = (nft, nftAbi, nftContractAddress, marketPlace, marke
 
                     }
                     else {
-                        alert("Please connect to the Wallet!");
+                        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
                         window.location.replace("connectMetamask.html");
                     }
                 });

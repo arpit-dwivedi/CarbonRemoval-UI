@@ -1,9 +1,15 @@
 firebase.initializeApp(firebaseConfig);
 
 const isMetaMaskInstalled = () => {
-    //Have to check the ethereum binding on the window object to see if it's installed
-    const { ethereum } = window;
-    return Boolean(ethereum && ethereum.isMetaMask);
+    try {
+        //Have to check the ethereum binding on the window object to see if it's installed
+        const { ethereum } = window;
+        return Boolean(ethereum && ethereum.isMetaMask);
+    }
+    catch (err) {
+        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
+        window.location.replace("connectMetamask.html");
+    }
 };
 
 $(function () {
@@ -11,7 +17,7 @@ $(function () {
 });
 
 firebase.auth().onAuthStateChanged(function (user) {
-    if (isMetaMaskInstalled) {
+    if (isMetaMaskInstalled()) {
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             document.getElementById('loadWalletAccount').innerText = accounts[0] || 'Connect Wallet';
             if (!accounts[0]) {
@@ -225,15 +231,17 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 
     const marketPlace = new web3.eth.Contract(marketPlaceAbi.abi, marketPlaceContractAddress.address);
 
-    if (isMetaMaskInstalled) {
+    if (isMetaMaskInstalled()) {
 
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             //console.log(accounts[0], uri);
             minNft(accounts[0], nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace, price);
         });
     }
-
-
+    else {
+        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
+        window.location.replace("connectMetamask.html");
+    }
 };
 
 const minNft = (account, nftAbi, nftContractAddress, marketPlaceAbi, marketPlaceContractAddress, uri, nft, marketPlace, price) => {
