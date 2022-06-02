@@ -1,15 +1,9 @@
 firebase.initializeApp(firebaseConfig);
 
 const isMetaMaskInstalled = () => {
-    try {
-        //Have to check the ethereum binding on the window object to see if it's installed
-        const { ethereum } = window;
-        return Boolean(ethereum && ethereum.isMetaMask);
-    }
-    catch (err) {
-        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
-        window.location.replace("connectMetamask.html");
-    }
+    //Have to check the ethereum binding on the window object to see if it's installed
+    const { ethereum } = window;
+    return Boolean(ethereum && ethereum.isMetaMask);
 };
 
 $(function () {
@@ -17,7 +11,7 @@ $(function () {
 });
 
 firebase.auth().onAuthStateChanged(function (user) {
-    if (isMetaMaskInstalled()) {
+    if (isMetaMaskInstalled) {
         ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
             document.getElementById('loadWalletAccount').innerText = accounts[0] || 'Connect Wallet';
             if (!accounts[0]) {
@@ -108,54 +102,47 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 const loadMarketplaceData = async (nft, nftAbi, nftContractAddress, marketPlace, marketPlaceAbi, marketPlaceContractAddress) => {
     let items = [];
 
-    if (isMetaMaskInstalled()) {
-        ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
-            var filter = marketPlace.getPastEvents(
-                'Bought', // change if your looking for a different event
-                { fromBlock: 0, toBlock: 'latest' }
-            ).then(function (events) {
-                //console.log(events);
+    ethereum.request({ method: 'eth_accounts' }).then(function (accounts) {
+        var filter = marketPlace.getPastEvents(
+            'Bought', // change if your looking for a different event
+            { fromBlock: 0, toBlock: 'latest' }
+        ).then(function (events) {
+            //console.log(events);
 
-                for (var i = 0; i < events.length; i++) {
+            for (var i = 0; i < events.length; i++) {
 
-                    let item = events[i].returnValues;
+                let item = events[i].returnValues;
 
-                    if (item?.buyer && item.buyer.toLowerCase() == accounts[0].toLowerCase()) {
-                        nft.methods.tokenURI(item.tokenId).call().then(uri => {
+                if (item?.buyer && item.buyer.toLowerCase() == accounts[0].toLowerCase()) {
+                    nft.methods.tokenURI(item.tokenId).call().then(uri => {
 
-                            fetch(uri)
-                                .then(response => {
-                                    return response.json();
-                                })
-                                .then(metadata => {
-                                    items.push({
-                                        totalPrice: item.price,
-                                        itemId: item.itemId,
-                                        seller: item.seller,
-                                        buyer: item.buyer,
-                                        name: metadata.name,
-                                        location: metadata.geocodedLocation,
-                                        image: metadata.image
-                                    });
-                                    //console.log(items);
-
-                                    loadNftIntoMarketPlace(items[items.length - 1], items.length - 1);
+                        fetch(uri)
+                            .then(response => {
+                                return response.json();
+                            })
+                            .then(metadata => {
+                                items.push({
+                                    totalPrice: item.price,
+                                    itemId: item.itemId,
+                                    seller: item.seller,
+                                    buyer: item.buyer,
+                                    name: metadata.name,
+                                    location: metadata.geocodedLocation,
+                                    image: metadata.image
                                 });
+                                //console.log(items);
+
+                                loadNftIntoMarketPlace(items[items.length - 1], items.length - 1);
+                            });
 
 
 
-                        });
-                    }
+                    });
+                }
 
-                };
-            });
+            };
         });
-    }
-    else {
-        alert("Metamask is not installed, Please install same from below page Connect Metamask !!!");
-        window.location.replace("connectMetamask.html");
-    }
-    
+    });
 }
 function loadNftIntoMarketPlace(item, j) {
     var childDiv = `<div class="card col-md-3 col-sm-3" style="margin:5px;">
