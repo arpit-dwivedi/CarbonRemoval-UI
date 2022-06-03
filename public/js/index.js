@@ -138,7 +138,7 @@ const loadContractData = (nftAbi, nftContractAddress, marketPlaceAbi, marketPlac
 
                     marketPlace.methods.purchaseItem(itemId).send({ from: accounts[0], value: totalPrice }).then(function (response) {
                         $('#loaderDivModal').hide();
-                        document.getElementById('resultTextMintNft').textContent = response;
+                        document.getElementById('resultTextMintNft').textContent = "Purchase Successfully.";
                         //console.log(response);
                     }).catch(error => {
                         $('#loaderDivModal').hide();
